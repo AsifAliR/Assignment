@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+    - name: install coughdb
+      apt: name=coughdb update_cache=yes state=latest
