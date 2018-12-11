@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  web:
+    image: httpd:2.4
+    container_name: apache_webserver
+    ports:
+      - "8100:80"
+    stdin_open: true
+    tty: true
