@@ -1,0 +1,1980 @@
+<!doctype html>
+<html xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:article="http://ogp.me/ns/article" lang="en-US" itemscope itemtype="http://schema.org/Article"  class="touch-styles">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- This is Squarespace. --><!-- embeddedartistry -->
+<base href="">
+<meta charset="utf-8" />
+<title>Jenkins: Kick off a CI Build with GitHub Push Notifications &mdash; Embedded Artistry</title>
+<link rel="shortcut icon" type="image/x-icon" href="https://static1.squarespace.com/static/5771d58329687f7f8d437b3b/t/5a78d1e053450a2924ecc6a2/favicon.ico"/>
+<link rel="canonical" href="https://embeddedartistry.com/blog/2017/12/21/jenkins-kick-off-a-ci-build-with-github-push-notifications"/>
+<link rel="amphtml" href="https://embeddedartistry.com/blog/2017/12/21/jenkins-kick-off-a-ci-build-with-github-push-notifications?format=amp">
+<meta property="og:site_name" content="Embedded Artistry"/>
+<meta property="og:title" content="Jenkins: Kick off a CI Build with GitHub Push Notifications"/>
+<meta property="og:latitude" content="40.7207559"/>
+<meta property="og:longitude" content="-74.00076130000002"/>
+<meta property="og:url" content="https://embeddedartistry.com/blog/2017/12/21/jenkins-kick-off-a-ci-build-with-github-push-notifications"/>
+<meta property="og:type" content="article"/>
+<meta property="og:image" content="http://static1.squarespace.com/static/5771d58329687f7f8d437b3b/t/5a78d1e453450a2924ecc830/1517867494804/embedded_artistry_icon_black_transparent.jpg?format=1500w"/>
+<meta property="og:image:width" content="600"/>
+<meta property="og:image:height" content="600"/>
+<meta itemprop="name" content="Jenkins: Kick off a CI Build with GitHub Push Notifications"/>
+<meta itemprop="url" content="https://embeddedartistry.com/blog/2017/12/21/jenkins-kick-off-a-ci-build-with-github-push-notifications"/>
+<meta itemprop="thumbnailUrl" content="http://static1.squarespace.com/static/5771d58329687f7f8d437b3b/t/5a78d1e453450a2924ecc830/1517867494804/embedded_artistry_icon_black_transparent.jpg?format=1500w"/>
+<link rel="image_src" href="http://static1.squarespace.com/static/5771d58329687f7f8d437b3b/t/5a78d1e453450a2924ecc830/1517867494804/embedded_artistry_icon_black_transparent.jpg?format=1500w" />
+<meta itemprop="image" content="http://static1.squarespace.com/static/5771d58329687f7f8d437b3b/t/5a78d1e453450a2924ecc830/1517867494804/embedded_artistry_icon_black_transparent.jpg?format=1500w"/>
+<meta name="twitter:title" content="Jenkins: Kick off a CI Build with GitHub Push Notifications"/>
+<meta name="twitter:image" content="http://static1.squarespace.com/static/5771d58329687f7f8d437b3b/t/5a78d1e453450a2924ecc830/1517867494804/embedded_artistry_icon_black_transparent.jpg?format=1500w"/>
+<meta name="twitter:url" content="https://embeddedartistry.com/blog/2017/12/21/jenkins-kick-off-a-ci-build-with-github-push-notifications"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="description" content="" />
+<script type="text/javascript" src="//use.typekit.net/ik/9wJut8jK1hzyXe__RKTedqPzkGQwsf7M1rs6pYWis5qfe0MffFHN4UJLFRbh52jhWD9aFDBqFQ6DwRqh52icFhjtZ2bDFhJDjy76MPG0ZAuKZAsqZAsyS1sTSaskpPoDSWmyScmDSeBRZPoRdhXCZAuKZAsqZAsyS1sTSaskpPoRdhXCZAuKZAsqZAsyS1sTSaskpPoDSWmyScmDSeBRZPoRdhXCdeNRjAUGdaFXOYiaiko8dA48Zes8ZeBkie8DiY4oOcFzdPUaiaS0ZAuKZAsqZAsyS1sTSaskpPoDSWmyScmDSeBRZPoRdhXK2YgkdayTdAIldcNhjPJPjAszjc9lZhBkjAuzdcblSY4zH6qJn3IbMg6IJMJ7f6K3UMIbMg6BJMJ7fbKlMsMMeMj6MKG4fJCgIMMjgkMfH6qJCMIbMg65JMJ7fbK0MsMMegM6MKG4fJ3gIMMjIPMfH6qJvDbbMs6IJMJ7fbRXFgMgeMj6MKG4fV9XIMIjIfMfqMeYyvzZgb.js"></script>
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+<script type="text/javascript">SQUARESPACE_ROLLUPS = {};</script>
+<script>(function(rollups, name) { if (!rollups[name]) { rollups[name] = {}; } rollups[name].js = ["//static.squarespace.com/universal/scripts-compressed/common-3698cdd20e5da87ba23c-min.en-US.js"]; })(SQUARESPACE_ROLLUPS, 'squarespace-common');</script>
+<script crossorigin="anonymous" src="//static.squarespace.com/universal/scripts-compressed/common-3698cdd20e5da87ba23c-min.en-US.js" ></script><script>(function(rollups, name) { if (!rollups[name]) { rollups[name] = {}; } rollups[name].js = ["//static.squarespace.com/universal/scripts-compressed/commerce-3180fe79bb99c00fdf01-min.en-US.js"]; })(SQUARESPACE_ROLLUPS, 'squarespace-commerce');</script>
+<script crossorigin="anonymous" src="//static.squarespace.com/universal/scripts-compressed/commerce-3180fe79bb99c00fdf01-min.en-US.js" ></script><script>(function(rollups, name) { if (!rollups[name]) { rollups[name] = {}; } rollups[name].css = ["//static.squarespace.com/universal/styles-compressed/commerce-a840ee3a77201db5c548717bab21806d-min.css"]; })(SQUARESPACE_ROLLUPS, 'squarespace-commerce');</script>
+<link rel="stylesheet" type="text/css" href="//static.squarespace.com/universal/styles-compressed/commerce-a840ee3a77201db5c548717bab21806d-min.css"/><script crossorigin="anonymous" src="//static.squarespace.com/universal/scripts-compressed/performance-998906d8224ca8132457-min.en-US.js" defer ></script><script data-name="static-context">Static = window.Static || {}; Static.SQUARESPACE_CONTEXT = {"facebookAppId":"314192535267336","rollups":{"squarespace-announcement-bar":{"css":"//static.squarespace.com/universal/styles-compressed/announcement-bar-d41d8cd98f00b204e9800998ecf8427e-min.css","js":"//static.squarespace.com/universal/scripts-compressed/announcement-bar-1bd7925052c607652834-min.en-US.js"},"squarespace-audio-player":{"css":"//static.squarespace.com/universal/styles-compressed/audio-player-a57b8f3aa31918104f57a068648fbc63-min.css","js":"//static.squarespace.com/universal/scripts-compressed/audio-player-cffbf653e0b11c30aab0-min.en-US.js"},"squarespace-blog-collection-list":{"css":"//static.squarespace.com/universal/styles-compressed/blog-collection-list-d41d8cd98f00b204e9800998ecf8427e-min.css","js":"//static.squarespace.com/universal/scripts-compressed/blog-collection-list-ff562ce8ec9c5b2fd574-min.en-US.js"},"squarespace-calendar-block-renderer":{"css":"//static.squarespace.com/universal/styles-compressed/calendar-block-renderer-61a327b8527a1fbf9b1fe569505ed5ae-min.css","js":"//static.squarespace.com/universal/scripts-compressed/calendar-block-renderer-34531c34c0a85ec67808-min.en-US.js"},"squarespace-chartjs-helpers":{"css":"//static.squarespace.com/universal/styles-compressed/chartjs-helpers-9935a41d63cf08ca108505d288c1712e-min.css","js":"//static.squarespace.com/universal/scripts-compressed/chartjs-helpers-25afe9156f91df52d675-min.en-US.js"},"squarespace-comments":{"css":"//static.squarespace.com/universal/styles-compressed/comments-bfcda0f17dd987db5206c1d15e83fd19-min.css","js":"//static.squarespace.com/universal/scripts-compressed/comments-c9ef09ed536ac1b1702e-min.en-US.js"},"squarespace-commerce-cart":{"js":"//static.squarespace.com/universal/scripts-compressed/commerce-cart-927d345174b4ce1f28ee-min.en-US.js"},"squarespace-dialog":{"css":"//static.squarespace.com/universal/styles-compressed/dialog-b548cc83dd846f17dd31de0760e67bc5-min.css","js":"//static.squarespace.com/universal/scripts-compressed/dialog-7e36a6c0ec448f0b55ab-min.en-US.js"},"squarespace-events-collection":{"css":"//static.squarespace.com/universal/styles-compressed/events-collection-61a327b8527a1fbf9b1fe569505ed5ae-min.css","js":"//static.squarespace.com/universal/scripts-compressed/events-collection-5faba38640a504e799cc-min.en-US.js"},"squarespace-form-rendering-utils":{"js":"//static.squarespace.com/universal/scripts-compressed/form-rendering-utils-73224d748996461c7bf1-min.en-US.js"},"squarespace-forms":{"css":"//static.squarespace.com/universal/styles-compressed/forms-ac7917c174031c937e3df4b3a2005b34-min.css","js":"//static.squarespace.com/universal/scripts-compressed/forms-578cc4f071110a42c6d5-min.en-US.js"},"squarespace-gallery-collection-list":{"css":"//static.squarespace.com/universal/styles-compressed/gallery-collection-list-d41d8cd98f00b204e9800998ecf8427e-min.css","js":"//static.squarespace.com/universal/scripts-compressed/gallery-collection-list-240156df1d90d16120d4-min.en-US.js"},"squarespace-image-zoom":{"css":"//static.squarespace.com/universal/styles-compressed/image-zoom-72b0ab7796582588032aa6472e2e2f14-min.css","js":"//static.squarespace.com/universal/scripts-compressed/image-zoom-7cb6942d60daf6e077c1-min.en-US.js"},"squarespace-pinterest":{"css":"//static.squarespace.com/universal/styles-compressed/pinterest-d41d8cd98f00b204e9800998ecf8427e-min.css","js":"//static.squarespace.com/universal/scripts-compressed/pinterest-5ca9565093f784df3bbd-min.en-US.js"},"squarespace-popup-overlay":{"css":"//static.squarespace.com/universal/styles-compressed/popup-overlay-7b48efeab9b323dfdb524a256cf61595-min.css","js":"//static.squarespace.com/universal/scripts-compressed/popup-overlay-9fd3840e2d9fc41a3fd2-min.en-US.js"},"squarespace-product-quick-view":{"css":"//static.squarespace.com/universal/styles-compressed/product-quick-view-bc8694b75a40e4bd969b662b80ebafb5-min.css","js":"//static.squarespace.com/universal/scripts-compressed/product-quick-view-eef513c2e706d0f3d7bd-min.en-US.js"},"squarespace-products-collection-item-v2":{"css":"//static.squarespace.com/universal/styles-compressed/products-collection-item-v2-72b0ab7796582588032aa6472e2e2f14-min.css","js":"//static.squarespace.com/universal/scripts-compressed/products-collection-item-v2-20f3db7cd0d892928eca-min.en-US.js"},"squarespace-products-collection-list-v2":{"css":"//static.squarespace.com/universal/styles-compressed/products-collection-list-v2-72b0ab7796582588032aa6472e2e2f14-min.css","js":"//static.squarespace.com/universal/scripts-compressed/products-collection-list-v2-8632e6d583481e62cfd8-min.en-US.js"},"squarespace-search-page":{"css":"//static.squarespace.com/universal/styles-compressed/search-page-ea3e98edb84abbc5e758884f69149027-min.css","js":"//static.squarespace.com/universal/scripts-compressed/search-page-c9b5af4d4391ffc0a725-min.en-US.js"},"squarespace-search-preview":{"js":"//static.squarespace.com/universal/scripts-compressed/search-preview-93d1b0941c99dc4f4598-min.en-US.js"},"squarespace-share-buttons":{"js":"//static.squarespace.com/universal/scripts-compressed/share-buttons-3fa5a4acab288f89d319-min.en-US.js"},"squarespace-simple-liking":{"css":"//static.squarespace.com/universal/styles-compressed/simple-liking-310d0b18e112f708f91339b11fd55714-min.css","js":"//static.squarespace.com/universal/scripts-compressed/simple-liking-357244efe9acf1f521be-min.en-US.js"},"squarespace-social-buttons":{"css":"//static.squarespace.com/universal/styles-compressed/social-buttons-26106f808f7e9c739a7f862a408ed039-min.css","js":"//static.squarespace.com/universal/scripts-compressed/social-buttons-51f9bbaab47a44ee6757-min.en-US.js"},"squarespace-tourdates":{"css":"//static.squarespace.com/universal/styles-compressed/tourdates-d41d8cd98f00b204e9800998ecf8427e-min.css","js":"//static.squarespace.com/universal/scripts-compressed/tourdates-44995d6282670b53870c-min.en-US.js"},"squarespace-website-overlays-manager":{"css":"//static.squarespace.com/universal/styles-compressed/website-overlays-manager-0db5c7c60d1d79fe731ced48ff0cc7c0-min.css","js":"//static.squarespace.com/universal/scripts-compressed/website-overlays-manager-b0e6cb8befe1f3246729-min.en-US.js"}},"pageType":50,"website":{"id":"5771d58329687f7f8d437b3b","identifier":"embeddedartistry","websiteType":1,"contentModifiedOn":1544140115390,"cloneable":false,"siteStatus":{},"language":"en-US","timeZone":"America/Los_Angeles","machineTimeZoneOffset":-28800000,"timeZoneOffset":-28800000,"timeZoneAbbr":"PST","siteTitle":"Embedded Artistry","fullSiteTitle":"Jenkins: Kick off a CI Build with GitHub Push Notifications \u2014 Embedded Artistry","siteTagLine":" Building Better Embedded Systems","siteDescription":"","location":{"addressLine1":"","addressLine2":"San Francisco, CA","addressCountry":""},"logoImageId":"5a668bb38165f59d849c551b","socialLogoImageId":"5a78d1e453450a2924ecc830","shareButtonOptions":{"8":true,"4":true,"5":true,"2":true,"1":true,"7":true,"3":true,"6":true},"logoImageUrl":"//static1.squarespace.com/static/5771d58329687f7f8d437b3b/t/5a668bb38165f59d849c551b/1544140115390/","socialLogoImageUrl":"//static1.squarespace.com/static/5771d58329687f7f8d437b3b/t/5a78d1e453450a2924ecc830/1544140115390/","authenticUrl":"https://embeddedartistry.com","internalUrl":"https://embeddedartistry.squarespace.com","baseUrl":"https://embeddedartistry.com","primaryDomain":"embeddedartistry.com","sslSetting":3,"isHstsEnabled":false,"socialAccounts":[{"serviceId":23,"userId":"1709063","userName":"phillipjohnston","screenname":"Phillip Johnston","addedOn":1499182832772,"profileUrl":"https://github.com/embeddedartistry","iconUrl":"https://avatars3.githubusercontent.com/u/1709063?v=3","iconEnabled":true,"serviceName":"github"},{"serviceId":4,"userId":"837389468692721664","userName":"mbeddedartistry","screenname":"Embedded Artistry","addedOn":1488485773015,"profileUrl":"https://twitter.com/mbeddedartistry","iconUrl":"http://pbs.twimg.com/profile_images/837395025084342272/tYJyCqd-_normal.jpg","collectionId":"58b87d8d6a4963070d9fe18f","iconEnabled":true,"serviceName":"twitter"},{"serviceId":14,"userId":"LDWKZbfHWM","userName":"phjohnston","screenname":"Phillip Johnston","addedOn":1518026084170,"profileUrl":"https://www.linkedin.com/in/phjohnston","iconUrl":"https://media.licdn.com/mpr/mprx/0_arz9XdpYkwkXrM2vFTSZfYjYQ4FcnU3zbTS9CjrYL4Fn1ITzIqDn7flY8VcXKI-MmqTZ7jYOw4N9z0hzb_ro2jx-a4NBz0L5T_rzFpE0LJTR0dOJD-QUbekamSmby0tNHhNV8G4zETI","iconEnabled":true,"serviceName":"linkedin"}],"typekitId":"","statsMigrated":false,"imageMetadataProcessingEnabled":false,"screenshotId":"4de349b9","showOwnerLogin":false},"websiteSettings":{"id":"5771d58329687f7f8d437b3e","websiteId":"5771d58329687f7f8d437b3b","subjects":[],"country":"US","state":"CA","simpleLikingEnabled":true,"mobileInfoBarSettings":{"isContactEmailEnabled":false,"isContactPhoneNumberEnabled":false,"isLocationEnabled":false,"isBusinessHoursEnabled":false},"commentLikesAllowed":true,"commentAnonAllowed":true,"commentThreaded":true,"commentApprovalRequired":false,"commentAvatarsOn":true,"commentSortType":1,"commentFlagThreshold":2,"commentFlagsAllowed":true,"commentEnableByDefault":true,"commentDisableAfterDaysDefault":0,"disqusShortname":"","commentsEnabled":true,"contactPhoneNumber":"","businessHours":{"monday":{"text":"","ranges":[{}]},"tuesday":{"text":"","ranges":[{}]},"wednesday":{"text":"","ranges":[{}]},"thursday":{"text":"","ranges":[{}]},"friday":{"text":"","ranges":[{}]},"saturday":{"text":"","ranges":[{}]},"sunday":{"text":"","ranges":[{}]}},"storeSettings":{"returnPolicy":null,"termsOfService":null,"privacyPolicy":null,"paymentSettings":{"stripeLivePublicApiKey":"pk_live_BPMX8Kzfq7s8BAiRrjngOuTw","stripeTestPublicApiKey":"pk_test_fNGI31fn7R008Hw2tosDqcDc","stripeUserId":"acct_1CUH5fBVt9s1qIjo","stripeAccountCountry":"US"},"expressCheckout":false,"continueShoppingLinkUrl":"store","useLightCart":false,"showNoteField":false,"shippingCountryDefaultValue":"US","billToShippingDefaultValue":true,"showShippingPhoneNumber":false,"isShippingPhoneRequired":false,"showBillingPhoneNumber":false,"isBillingPhoneRequired":false,"multipleQuantityAllowedForServices":true,"currenciesSupported":["USD","AUD","CAD","CHF","CZK","DKK","EUR","GBP","HKD","ILS","MXN","MYR","NOK","NZD","PHP","PLN","RUB","SEK","SGD","THB"],"defaultCurrency":"USD","selectedCurrency":"USD","measurementStandard":1,"showCustomCheckoutForm":false,"enableMailingListOptInByDefault":true,"mailingListDescription":"<p>Subscribe to our mailing list to hear about discounts, new product &amp; template releases, and company news.</p>","contactLocation":{"addressLine1":"PO Box 15118","addressLine2":"San Francisco, CA 94115","addressCountry":"United States"},"businessName":"Embedded Artistry LLC","sameAsRetailLocation":false,"businessId":"","isLive":true},"useEscapeKeyToLogin":true,"ssBadgeType":1,"ssBadgePosition":4,"ssBadgeVisibility":1,"ssBadgeDevices":1,"pinterestOverlayOptions":{"mode":"disabled"},"ampEnabled":true},"cookieSettings":{"isCookieBannerEnabled":false,"isRestrictiveCookiePolicyEnabled":false,"isRestrictiveCookiePolicyAbsolute":false,"cookieBannerText":"","cookieBannerTheme":"","cookieBannerVariant":"","cookieBannerPosition":"","cookieBannerCtaVariant":"","cookieBannerCtaText":""},"websiteCloneable":false,"collection":{"title":"Blog","id":"5771ec40d1758e632caab68a","fullUrl":"/blog/","type":1},"item":{"title":"Jenkins: Kick off a CI Build with GitHub Push Notifications","id":"5a3408f98165f5e58a4b2ea6","fullUrl":"/blog/2017/12/21/jenkins-kick-off-a-ci-build-with-github-push-notifications","publicCommentCount":0,"commentState":1,"recordType":1},"subscribed":false,"appDomain":"squarespace.com","templateTweakable":true,"tweakJSON":{"aspect-ratio":"Auto","banner-slideshow-controls":"Arrows","gallery-arrow-style":"No Background","gallery-aspect-ratio":"3:2 Standard","gallery-auto-crop":"true","gallery-autoplay":"false","gallery-design":"Grid","gallery-info-overlay":"Show on Hover","gallery-loop":"false","gallery-navigation":"Bullets","gallery-show-arrows":"true","gallery-transitions":"Fade","galleryArrowBackground":"rgba(34,34,34,1)","galleryArrowColor":"rgba(255,255,255,1)","galleryAutoplaySpeed":"3","galleryCircleColor":"rgba(255,255,255,1)","galleryInfoBackground":"rgba(0, 0, 0, .7)","galleryThumbnailSize":"100px","gridSize":"280px","gridSpacing":"10px","logoContainerWidth":"300px","product-gallery-auto-crop":"false","product-image-auto-crop":"true","siteTitleContainerWidth":"240px"},"templateId":"52a74dafe4b073a80cd253c5","pageFeatures":[1,2,4],"googleMapsStaticApiKey":"AIzaSyBQdch5IcgcQaKNG76sbMQv1MEBEKLeQ-8","impersonatedSession":false,"isFacebookTab":false,"tzData":{"zones":[[-480,"US","P%sT",null]],"rules":{"US":[[1967,2006,null,"Oct","lastSun","2:00","0","S"],[1987,2006,null,"Apr","Sun>=1","2:00","1:00","D"],[2007,"max",null,"Mar","Sun>=8","2:00","1:00","D"],[2007,"max",null,"Nov","Sun>=1","2:00","0","S"]]}}};</script><script type="text/javascript"> SquarespaceFonts.loadViaContext(); Squarespace.load(window);</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://embeddedartistry.com/blog?format=RSS" />
+<script type="application/ld+json">{"url":"https://embeddedartistry.com","name":"Embedded Artistry","description":"","image":"//static1.squarespace.com/static/5771d58329687f7f8d437b3b/t/5a668bb38165f59d849c551b/1544140115390/","@context":"http://schema.org","@type":"WebSite"}</script><script type="application/ld+json">{"legalName":"Embedded Artistry LLC","address":"San Francisco, CA","email":"phillip@embeddedartistry.com","telephone":"","@context":"http://schema.org","@type":"Organization"}</script><script type="application/ld+json">{"address":"PO Box 15118\nSan Francisco, CA 94115\nUnited States","image":"https://static1.squarespace.com/static/5771d58329687f7f8d437b3b/t/5a668bb38165f59d849c551b/1544140115390/","name":"Embedded Artistry LLC","openingHours":", , , , , , ","@context":"http://schema.org","@type":"LocalBusiness"}</script><!--[if gte IE 9]> <link rel="stylesheet" type="text/css" href="//static1.squarespace.com/static/sitecss/5771d58329687f7f8d437b3b/107/52a74dafe4b073a80cd253c5/59c175168dd04171927bdef3/1015-05142015/1534549788025/site.css?&filterFeatures=false&part=1"/><link rel="stylesheet" type="text/css" href="//static1.squarespace.com/static/sitecss/5771d58329687f7f8d437b3b/107/52a74dafe4b073a80cd253c5/59c175168dd04171927bdef3/1015-05142015/1534549788025/site.css?&filterFeatures=false&part=2"/><link rel="stylesheet" type="text/css" href="//static1.squarespace.com/static/sitecss/5771d58329687f7f8d437b3b/107/52a74dafe4b073a80cd253c5/59c175168dd04171927bdef3/1015-05142015/1534549788025/site.css?&filterFeatures=false&part=3"/><link rel="stylesheet" type="text/css" href="//static1.squarespace.com/static/sitecss/5771d58329687f7f8d437b3b/107/52a74dafe4b073a80cd253c5/59c175168dd04171927bdef3/1015-05142015/1534549788025/site.css?&filterFeatures=false&part=4"/><![endif]-->
+<!--[if lt IE 9]><link rel="stylesheet" type="text/css" href="//static1.squarespace.com/static/sitecss/5771d58329687f7f8d437b3b/107/52a74dafe4b073a80cd253c5/59c175168dd04171927bdef3/1015-05142015/1534549788025/site.css?&filterFeatures=false&noMedia=true&part=1"/><link rel="stylesheet" type="text/css" href="//static1.squarespace.com/static/sitecss/5771d58329687f7f8d437b3b/107/52a74dafe4b073a80cd253c5/59c175168dd04171927bdef3/1015-05142015/1534549788025/site.css?&filterFeatures=false&noMedia=true&part=2"/><link rel="stylesheet" type="text/css" href="//static1.squarespace.com/static/sitecss/5771d58329687f7f8d437b3b/107/52a74dafe4b073a80cd253c5/59c175168dd04171927bdef3/1015-05142015/1534549788025/site.css?&filterFeatures=false&noMedia=true&part=3"/><link rel="stylesheet" type="text/css" href="//static1.squarespace.com/static/sitecss/5771d58329687f7f8d437b3b/107/52a74dafe4b073a80cd253c5/59c175168dd04171927bdef3/1015-05142015/1534549788025/site.css?&filterFeatures=false&noMedia=true&part=4"/><![endif]-->
+<!--[if !IE]> --><link rel="stylesheet" type="text/css" href="//static1.squarespace.com/static/sitecss/5771d58329687f7f8d437b3b/107/52a74dafe4b073a80cd253c5/59c175168dd04171927bdef3/1015-05142015/1534549788025/site.css?&filterFeatures=false"/><!-- <![endif]-->
+<meta name="google-site-verification" content="rixi2SHHGnGnR9lApO2sfT61P8Eew_oV98aHZzJoaBA" />
+<meta name="google-site-verification" content="tTMg0wTcX3v-o7JKiI6yZvEhke1sgaotTqsH-ivOW9c" />
+<meta name="google-site-verification" content="o5xSvPUbOS4KWhM3vCMP_Wk0Zy_4IAPM3y8S9exEV_w" />
+<script type="text/javascript" src="//downloads.mailchimp.com/js/signup-forms/popup/embed.js" data-dojo-config="usePlainJson: true, isDebug: false"></script><script type="text/javascript">require(["mojo/signup-forms/Loader"], function(L) { L.start({"baseUrl":"mc.us15.list-manage.com","uuid":"3f4551eb6b068b6cc1ef205c1","lid":"4fdc45fab7"}) })</script><script>Static.COOKIE_BANNER_CAPABLE = true;</script>
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-122309960-1', 'auto');ga('send', 'pageview');</script><!-- End of Squarespace Headers -->
+    <script>/* Must be below squarespace-headers */(function(){var e='ontouchstart'in window||navigator.msMaxTouchPoints;var t=document.documentElement;if(!e&&t){t.className=t.className.replace(/touch-styles/,'')}})()
+    </script>
+  </head>
+
+  <body id="item-5a3408f98165f5e58a4b2ea6" class="nav-button-style-outline nav-button-corner-style-pill banner-button-style-solid banner-button-corner-style-pill banner-slideshow-controls-arrows meta-priority-date center-entry-title--meta       center-navigation--info hide-site-info   event-show-past-events event-thumbnails event-thumbnail-size-32-standard event-date-label  event-list-show-cats event-list-date event-list-time event-list-address   event-icalgcal-links  event-excerpts      gallery-design-grid aspect-ratio-auto lightbox-style-light gallery-navigation-bullets gallery-info-overlay-show-on-hover gallery-aspect-ratio-32-standard gallery-arrow-style-no-background gallery-transitions-fade gallery-show-arrows gallery-auto-crop   product-list-titles-under product-list-alignment-center product-item-size-11-square product-image-auto-crop product-gallery-size-11-square  show-product-price show-product-item-nav product-social-sharing newsletter-style-dark hide-opentable-icons opentable-style-dark small-button-style-solid small-button-shape-square medium-button-style-solid medium-button-shape-square large-button-style-solid large-button-shape-square image-block-poster-text-alignment-center image-block-card-dynamic-font-sizing image-block-card-content-position-center image-block-card-text-alignment-left image-block-overlap-dynamic-font-sizing image-block-overlap-content-position-center image-block-overlap-text-alignment-left image-block-collage-dynamic-font-sizing image-block-collage-content-position-top image-block-collage-text-alignment-left image-block-stack-dynamic-font-sizing image-block-stack-text-alignment-left button-style-solid button-corner-style-square tweak-product-quick-view-button-style-floating tweak-product-quick-view-button-position-bottom tweak-product-quick-view-lightbox-excerpt-display-truncate tweak-product-quick-view-lightbox-show-arrows tweak-product-quick-view-lightbox-show-close-button tweak-product-quick-view-lightbox-controls-weight-light native-currency-code-usd view-item collection-type-blog collection-layout-default collection-5771ec40d1758e632caab68a mobile-style-available">
+    <a href="#" class="body-overlay"></a>
+    <div class="sqs-announcement-bar-dropzone"></div>
+    <div id="sidecarNav">
+      
+
+  <div id="mobileNavWrapper" class="nav-wrapper" data-content-field="navigation-mobileNav">
+    <nav id="mobileNavigation">
+      
+
+      
+        
+          
+
+          
+
+            
+            <div class="collection">
+              <a href="/first-time-here/">
+                Welcome
+              </a>
+            </div>
+            
+
+          
+        
+        
+
+      
+        
+          
+
+          
+
+            
+            <div class="collection">
+              <a href="/about/">
+                About
+              </a>
+            </div>
+            
+
+          
+        
+        
+
+      
+        
+          
+
+          
+
+            
+            <div class="collection active">
+              <a href="/blog/">
+                Blog
+              </a>
+            </div>
+            
+
+          
+        
+        
+
+      
+        
+          
+
+          
+
+            
+            <div class="collection">
+              <a href="/archive/">
+                Archive
+              </a>
+            </div>
+            
+
+          
+        
+        
+
+      
+        
+          
+
+          
+
+            
+            <div class="collection">
+              <a href="/newsletter/">
+                Newsletter
+              </a>
+            </div>
+            
+
+          
+        
+        
+
+      
+        
+          
+
+          
+          <div class="folder">
+            <div class="folder-toggle" data-href="/resources-1/">Resources</div>
+            <div class="subnav">
+            
+
+              
+              <div class="collection">
+                <a href="/beginners/">
+                  For Beginners
+                </a>
+              </div>
+              
+              
+            
+
+              
+              <div class="collection">
+                <a href="/glossary/">
+                  Glossary
+                </a>
+              </div>
+              
+              
+            
+
+              
+              <div class="collection">
+                <a href="/libraries/">
+                  Open-Source Libraries
+                </a>
+              </div>
+              
+              
+            
+
+              
+              <div class="collection">
+                <a href="/templates/">
+                  Templates
+                </a>
+              </div>
+              
+              
+            
+
+              
+              <div class="collection">
+                <a href="/software-references/">
+                  Software References
+                </a>
+              </div>
+              
+              
+            
+
+              
+              <div class="collection">
+                <a href="/hardware-references/">
+                  Hardware References
+                </a>
+              </div>
+              
+              
+            
+
+              
+              <div class="collection">
+                <a href="/dev-kits/">
+                  Development Kits
+                </a>
+              </div>
+              
+              
+            
+
+              
+              
+              <div class="external">
+                <a href="https://radar.thoughtworks.com/?sheetId=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2F1GZ82tDorTwFwrydT3sjwKRFjF-43jmXI96-f3dT-RYE%2Fedit%23gid%3D0" target="_blank">
+                  Technology Radar
+                </a>
+              </div>
+              
+            
+
+              
+              
+              <div class="external">
+                <a href="https://embeddedartistryconsulting.com" target="_blank">
+                  Consulting
+                </a>
+              </div>
+              
+            
+            </div>
+          </div>
+          
+        
+        
+
+      
+        
+          
+
+          
+
+            
+            <div class="collection">
+              <a href="/search-ea/">
+                Search
+              </a>
+            </div>
+            
+
+          
+        
+        
+
+      
+        
+          
+
+          
+
+            
+            <div class="collection">
+              <a href="/store/">
+                Store
+              </a>
+            </div>
+            
+
+          
+        
+        
+
+      
+    </nav>
+  </div>
+
+
+
+    </div>
+    <div id="siteWrapper" class="clearfix">
+
+      <div class="sqs-cart-dropzone"></div>
+
+      <header id="header" class="show-on-scroll" data-offset-el=".index-section" data-offset-behavior="bottom" role="banner">
+        <div class="header-inner">
+          <div id="logoWrapper" class="wrapper" data-content-field="site-title">
+            
+              <h1 id="logoImage"><a href="/"><img src="//static1.squarespace.com/static/5771d58329687f7f8d437b3b/t/5a668bb38165f59d849c551b/1544140115390/?format=1500w" alt="Embedded Artistry" /></a></h1>
+            
+          </div><!--
+          --><div class="mobile-nav-toggle"><div class="top-bar"></div><div class="middle-bar"></div><div class="bottom-bar"></div></div><div class="mobile-nav-toggle fixed-nav-toggle"><div class="top-bar"></div><div class="middle-bar"></div><div class="bottom-bar"></div></div><!--
+          --><div id="headerNav">
+
+  <div id="mainNavWrapper" class="nav-wrapper" data-content-field="navigation-mainNav">
+    <nav id="mainNavigation" data-content-field="navigation-mainNav">
+      
+
+      
+        
+          
+
+          
+
+            
+            <div class="collection">
+              <a href="/first-time-here/">
+                Welcome
+              </a>
+            </div>
+            
+
+          
+        
+        
+
+      
+        
+          
+
+          
+
+            
+            <div class="collection">
+              <a href="/about/">
+                About
+              </a>
+            </div>
+            
+
+          
+        
+        
+
+      
+        
+          
+
+          
+
+            
+            <div class="collection active">
+              <a href="/blog/">
+                Blog
+              </a>
+            </div>
+            
+
+          
+        
+        
+
+      
+        
+          
+
+          
+
+            
+            <div class="collection">
+              <a href="/archive/">
+                Archive
+              </a>
+            </div>
+            
+
+          
+        
+        
+
+      
+        
+          
+
+          
+
+            
+            <div class="collection">
+              <a href="/newsletter/">
+                Newsletter
+              </a>
+            </div>
+            
+
+          
+        
+        
+
+      
+        
+          
+
+          
+          <div class="folder">
+            <div class="folder-toggle" data-href="/resources-1/">Resources</div>
+            <div class="subnav">
+            
+
+              
+              <div class="collection">
+                <a href="/beginners/">
+                  For Beginners
+                </a>
+              </div>
+              
+              
+            
+
+              
+              <div class="collection">
+                <a href="/glossary/">
+                  Glossary
+                </a>
+              </div>
+              
+              
+            
+
+              
+              <div class="collection">
+                <a href="/libraries/">
+                  Open-Source Libraries
+                </a>
+              </div>
+              
+              
+            
+
+              
+              <div class="collection">
+                <a href="/templates/">
+                  Templates
+                </a>
+              </div>
+              
+              
+            
+
+              
+              <div class="collection">
+                <a href="/software-references/">
+                  Software References
+                </a>
+              </div>
+              
+              
+            
+
+              
+              <div class="collection">
+                <a href="/hardware-references/">
+                  Hardware References
+                </a>
+              </div>
+              
+              
+            
+
+              
+              <div class="collection">
+                <a href="/dev-kits/">
+                  Development Kits
+                </a>
+              </div>
+              
+              
+            
+
+              
+              
+              <div class="external">
+                <a href="https://radar.thoughtworks.com/?sheetId=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2F1GZ82tDorTwFwrydT3sjwKRFjF-43jmXI96-f3dT-RYE%2Fedit%23gid%3D0" target="_blank">
+                  Technology Radar
+                </a>
+              </div>
+              
+            
+
+              
+              
+              <div class="external">
+                <a href="https://embeddedartistryconsulting.com" target="_blank">
+                  Consulting
+                </a>
+              </div>
+              
+            
+            </div>
+          </div>
+          
+        
+        
+
+      
+        
+          
+
+          
+
+            
+            <div class="collection">
+              <a href="/search-ea/">
+                Search
+              </a>
+            </div>
+            
+
+          
+        
+        
+
+      
+        
+          
+
+          
+
+            
+            <div class="collection">
+              <a href="/store/">
+                Store
+              </a>
+            </div>
+            
+
+          
+        
+        
+
+      
+    </nav>
+  </div>
+  <!-- style below blocks out the mobile nav toggle only when nav is loaded -->
+  <style>.mobile-nav-toggle-label { display: inline-block !important; }</style>
+
+
+</div>
+        </div>
+      </header>
+
+      
+        
+          
+            
+              
+            
+          
+        
+      
+
+
+      
+      
+      
+
+      <main id="page" role="main">
+        
+        <!--
+        --><!--
+        --><div id="content" class="main-content" data-content-field="main-content" data-collection-id="5771ec40d1758e632caab68a" data-edit-main-image="Banner">
+         <div class="blog-item">
+
+  
+  <article class="entry h-entry hentry tag-jenkins tag-github tag-how-to-guide author-phillip-johnston post-type-text clear" id="article-5a3408f98165f5e58a4b2ea6" data-item-id="5a3408f98165f5e58a4b2ea6">
+
+    <header class="entry-header">
+      <div class="meta-above-title">
+        
+        <div class="entry-byline">
+          <span class="entry-author"><a href="/blog/?author=5771d1832994ca52eb5a9f35" class="p-author author entry-byline-link" rel="author">Phillip Johnston</a></span>
+        </div>
+        
+        <div class="entry-dateline">
+          <time class="dt-published published entry-date" datetime="2017-12-21" pubdate><a href="/blog/2017/12/21/jenkins-kick-off-a-ci-build-with-github-push-notifications" class="entry-dateline-link">December 21, 2017</a></time>
+          <time class="dt-updated updated" datetime="2017-12-26"></time>
+        </div>
+        
+      </div>
+      <h1 data-content-field="title" class="entry-title p-name">
+      
+        <a href="/blog/2017/12/21/jenkins-kick-off-a-ci-build-with-github-push-notifications" class="u-url" rel="bookmark">Jenkins: Kick off a CI Build with GitHub Push Notifications</a>
+      
+      </h1>
+      <div class="meta-below-title no-categories">
+        
+        <div class="entry-byline">
+          <span class="entry-author"><a href="/blog/?author=5771d1832994ca52eb5a9f35" class="p-author author entry-byline-link" rel="author">Phillip Johnston</a></span>
+        </div>
+        
+        <div class="entry-dateline">
+          <time class="dt-published published entry-date" datetime="2017-12-21" pubdate><a href="/blog/2017/12/21/jenkins-kick-off-a-ci-build-with-github-push-notifications" class="entry-dateline-link">December 21, 2017</a></time>
+          <time class="dt-updated updated" datetime="2017-12-26"></time>
+        </div>
+        
+      </div>
+    </header>
+
+    <div class="entry-content e-content">
+      
+        <div class="sqs-layout sqs-grid-12 columns-12" data-layout-label="Post Body" data-type="item" data-updated-on="1513359651342" id="item-5a3408f98165f5e58a4b2ea6"><div class="row sqs-row"><div class="col sqs-col-12 span-12"><div class="sqs-block markdown-block sqs-block-markdown" data-block-type="44" id="block-b77ec70d4ad8d075dfdf"><div class="sqs-block-content"><p>When creating a <a href="http://jenkins.io">Jenkins</a> multi-branch pipeline job, builds will be triggered based on the rules set for each job. By default, each repository is scanned on a timer (e.g. every 30min, once a day) and builds are triggered if new commits or pull requests have been made since the last scan. However, what I really want is for my continuous integration builds to get kicked off immediately after someone opens a new PR or pushes a new commit. </p>
+<p>I was initially stumped as to why this wasn't working - I had gone through quite a few GitHub setup steps when configuring Jenkins. My web searches didn't turn up anything obvious, but eventually I stumbled across a <a href="https://support.cloudbees.com/hc/en-us/articles/224543927-GitHub-webhook-configuration">helpful Cloudbees article describing web hook configuration</a>. Hopefully someone else who is stumped will find this helpful guide!</p>
+<p>In order for builds to be triggered automatically by <code>PUSH</code> and <code>PULL REQUEST</code> events, a Jenkins Web Hook needs to be added to each GitHub repository or organization that interacts with your build server. You (or someone who can help) will need admin permissions on that repository.</p>
+<h1 id="step-by-step-guide">Step-by-Step Guide</h1>
+<p>For each GitHub repository or organization that you need to configure, perform the following steps:</p>
+<ol>
+<li>Navigate to the "Settings" tab.</li>
+<li>Select the "Webhooks" option on the left menu</li>
+<li>Click "Add Webhook"</li>
+<li>For "Payload URL":<ul>
+<li>Use the address for the Jenkins server instance (e.g. <a href="http://myjenkins.com">http://myjenkins.com</a>)</li>
+<li>Add <code>/github-webhook/</code> to the end of it. </li>
+<li>Make sure to include the last <code>/</code>!<ul>
+<li>example: <code>http://myjenkins.com/github-webhook/</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Select "application/json" as the encoding type</li>
+<li>Leave "Secret" blank (unless a secret has been created and configured in the Jenkins "Configure System -&gt; GitHub plugin" section)</li>
+<li>Select "Let me select individual events"<ul>
+<li>Enable PUSH event</li>
+<li>Enable Pull Request event</li>
+</ul>
+</li>
+<li>Make sure "Active" is checked</li>
+<li>Click "Add Webhook"</li>
+</ol>
+<p>Jenkins will now receive push and pull request notifications for that repository, and related builds will be automatically triggered.</p>
+<h1 id="further-reading">Further Reading</h1>
+<ul>
+<li><a href="https://support.cloudbees.com/hc/en-us/articles/224543927-GitHub-webhook-configuration">Cloudbees: GitHub webhook configuration</a></li>
+</ul>
+</div></div></div></div></div>
+      
+    </div>
+
+    <footer class="entry-footer clear">
+      
+      
+      <p class="entry-tags">
+        Tagged: <a href="/blog/?tag=Jenkins" rel="tag">Jenkins</a>, <a href="/blog/?tag=GitHub" rel="tag">GitHub</a>, <a href="/blog/?tag=How-to+Guide" rel="tag">How-to Guide</a>
+      </p>
+      
+      <div class="entry-actions">
+        
+  <span class="sqs-simple-like" data-item-id="5a3408f98165f5e58a4b2ea6" data-like-count="2">
+    <span class="like-icon"></span>
+    <span class="like-count"></span>
+  </span>
+
+<span class="squarespace-social-buttons inline-style" data-system-data-id="" data-asset-url="https://static1.squarespace.com/static/5771d58329687f7f8d437b3b/5771ec40d1758e632caab68a/5a3408f98165f5e58a4b2ea6/1514311183391/" data-record-type="1" data-full-url="/blog/2017/12/21/jenkins-kick-off-a-ci-build-with-github-push-notifications" data-title="Jenkins: Kick off a CI Build with GitHub Push Notifications"></span>
+      </div>
+    </footer>
+
+    
+
+  </article>
+
+  <div id="comments-5a3408f98165f5e58a4b2ea6" class="p-comment">
+    
+  <div class="squarespace-comments" id="comments-5a3408f98165f5e58a4b2ea6" data-item-id="5a3408f98165f5e58a4b2ea6" data-public-comment-count="0" data-comment-state="1"></div>
+
+
+  </div>
+
+  
+
+  
+  <nav class="pagination clear">
+    <div class="newer"><span class="prev-label">Newer Post</span><a href="/blog/2017/12/28/jenkins-generating-blue-ocean-urls" rel="prev"><span>Jenkins: Generating Blue Ocean URLs</span></a></div><!-- comment the linebreak between these two elements because science
+  --><div class="older"><span class="next-label">Older Post</span><a href="/blog/2017/12/18/missing-headers-after-an-osx-update-try-this" rel="next"><span>Missing headers after an OSX Update? Try this!</span></a></div>
+  </nav>
+  
+
+</div>
+        </div><!--
+        --><aside id="rightSidebar" role="complementary">
+          <div class="sqs-layout sqs-grid-12 columns-12 open-block-field" data-layout-label="Blog Sidebar Content" data-type="block-field" data-updated-on="1537477680265" id="blogBlocks-5771ec40d1758e632caab68a"><div class="row sqs-row"><div class="col sqs-col-12 span-12"><div class="sqs-block search-block sqs-block-search" data-block-type="33" id="block-yui_3_17_2_1_1528304702491_3889"><div class="sqs-block-content"><div class="sqs-search-ui-text-input sqs-search-ui-button-wrapper color-dark" data-source="block" data-preview="true" data-collection="">
+  <div class="spinner-wrapper"></div>
+  <input type="search" class="search-input" value="" placeholder="Search"/>
+</div>
+</div></div><div class="sqs-block html-block sqs-block-html" data-block-type="2" id="block-yui_3_17_2_1_1531440115408_15285"><div class="sqs-block-content"><h3 style="text-align: center; white-space: pre-wrap;"><a href="/newsletter">Newsletter</a></h3><p style="text-align: center; white-space: pre-wrap;">Want to stay up-to-date with the embedded systems world? <br><a href="/newsletter">Sign up for our newsletter</a>.</p><h3 style="white-space: pre-wrap;"><a href="/support-the-website">Support the Website</a></h3><p style="text-align: center; white-space: pre-wrap;">We spend 80+ hours each month researching & writing.</p><p style="text-align: center; white-space: pre-wrap;">Your support enables us to create quality content for the community:</p></div></div><div class="sqs-block donation-block sqs-block-donation" data-block-type="52" id="block-yui_3_17_2_1_1532713470445_7722"><div class="sqs-block-content">
+<div class="sqs-donate-button-wrapper sqs-donate-button-wrapper--align-center">
+  <div class="sqs-donate-button sqs-suppress-edit-mode sqs-system-button sqs-editable-button" data-donate-page-id="5b5b5a5903ce64859386176b">Donate Now</div>
+</div>
+</div></div><div class="sqs-block html-block sqs-block-html" data-block-type="2" id="block-yui_3_17_2_1_1532713470445_7787"><div class="sqs-block-content"><h3 style="text-align: center; white-space: pre-wrap;"><a href="/archive">Featured Posts</a></h3></div></div><div class="sqs-block summary-v2-block sqs-block-summary-v2" data-block-json="&#123;&quot;hSize&quot;:null,&quot;floatDir&quot;:null,&quot;collectionId&quot;:&quot;5771ec40d1758e632caab68a&quot;,&quot;design&quot;:&quot;autocolumns&quot;,&quot;headerText&quot;:&quot;Featured&quot;,&quot;textSize&quot;:&quot;small&quot;,&quot;pageSize&quot;:5,&quot;imageAspectRatio&quot;:&quot;Auto&quot;,&quot;columnWidth&quot;:270,&quot;gutter&quot;:15,&quot;listImageSize&quot;:10,&quot;listImageAlignment&quot;:&quot;left&quot;,&quot;slidesPerRow&quot;:3,&quot;textAlignment&quot;:&quot;center&quot;,&quot;showTitle&quot;:true,&quot;showThumbnail&quot;:false,&quot;showExcerpt&quot;:false,&quot;showReadMoreLink&quot;:false,&quot;showPrice&quot;:true,&quot;productQuickViewEnabled&quot;:false,&quot;showPastOrUpcomingEvents&quot;:&quot;upcoming&quot;,&quot;metadataPosition&quot;:&quot;below-content&quot;,&quot;primaryMetadata&quot;:&quot;none&quot;,&quot;secondaryMetadata&quot;:&quot;none&quot;,&quot;filter&quot;:&#123;&quot;tag&quot;:&quot;Featured&quot;&#125;,&quot;autoCrop&quot;:true,&quot;lightbox&quot;:false,&quot;mixedContent&quot;:true,&quot;blockId&quot;:&quot;fceb5d8daf82ff356d7a&quot;&#125;" data-block-type="55" id="block-yui_3_17_2_1_1528304702491_18046"><div class="sqs-block-content">
+
+<div class="
+  summary-block-wrapper
+
+  summary-block-collection-type-blog
+  
+  summary-block-setting-text-size-small
+  summary-block-setting-text-align-center
+
+  summary-block-setting-design-autocolumns
+  summary-block-setting-design-list-thumbnail-left
+
+  summary-block-setting-metadata-position-below-content
+  summary-block-setting-primary-metadata-none
+  summary-block-setting-secondary-metadata-none
+
+  
+  summary-block-setting-show-title
+  summary-block-setting-show-price
+  summary-block-setting-hide-excerpt
+  
+
+  
+
+  sqs-gallery-design-autocolumns
+
+  
+  "
+
+  
+>
+
+  <div class="summary-item-list-container sqs-gallery-container">
+
+    <header class="summary-block-header">
+
+      <!-- Collection Title -->
+      <div class="summary-heading">
+        
+          <span class="summary-header-text">Featured</span>
+        
+      </div>
+
+      <!-- Carousel Nav -->
+      <div class="summary-carousel-pager sqs-gallery-controls">
+        <span class="summary-carousel-pager-next next"></span>
+        <span class="summary-carousel-pager-prev previous"></span>
+      </div>
+
+    </header>
+
+    <div class="summary-item-list sqs-gallery">
+
+      
+
+        <div class="
+          summary-item
+          summary-item-record-type-text
+          sqs-gallery-design-autocolumns-slide
+          
+          
+          
+          summary-item-has-cats
+          summary-item-has-tags
+          summary-item-has-author
+          summary-item-has-comments-enabled
+          "
+          >
+
+          
+
+          <div class="summary-content sqs-gallery-meta-container">
+
+            <!-- Metadata (Above Title) -->
+            <div class="summary-metadata-container summary-metadata-container--above-title">
+                          
+              <div class="summary-metadata summary-metadata--primary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+              
+              <div class="summary-metadata summary-metadata--secondary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            </div>
+
+            
+              <!-- Title -->
+              <div class="summary-title">
+                <a 
+                
+                  
+                    href="/blog/2018/12/6/a-look-at-ten-hardware-startup-blunders-part-4-summary-and-recommended-reading"
+                  
+                
+                class="summary-title-link">A Look at Ten Hardware Startup Blunders, Part 4: Conclusion</a></div>
+            
+
+            <!-- Metadata (Below Title) -->
+            <div class="summary-metadata-container summary-metadata-container--below-title">
+            
+              <div class="summary-metadata summary-metadata--primary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+              
+              <div class="summary-metadata summary-metadata--secondary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            </div>
+
+            
+              
+            
+            
+            
+
+            <!-- Metadata (Below Content) -->
+            <div class="summary-metadata-container summary-metadata-container--below-content">
+              
+              <div class="summary-metadata summary-metadata--primary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+              
+              <div class="summary-metadata summary-metadata--secondary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            </div>
+
+          </div> <!-- End .summary-content -->
+
+        </div> <!-- End .summary-item -->
+
+      
+
+        <div class="
+          summary-item
+          summary-item-record-type-text
+          sqs-gallery-design-autocolumns-slide
+          
+          
+          
+          summary-item-has-cats
+          summary-item-has-tags
+          summary-item-has-author
+          summary-item-has-comments-enabled
+          "
+          >
+
+          
+
+          <div class="summary-content sqs-gallery-meta-container">
+
+            <!-- Metadata (Above Title) -->
+            <div class="summary-metadata-container summary-metadata-container--above-title">
+                          
+              <div class="summary-metadata summary-metadata--primary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+              
+              <div class="summary-metadata summary-metadata--secondary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            </div>
+
+            
+              <!-- Title -->
+              <div class="summary-title">
+                <a 
+                
+                  
+                    href="/blog/2018/11/27/a-look-at-ten-hardware-startup-blunders-part-3-team"
+                  
+                
+                class="summary-title-link">A Look at Ten Hardware Startup Blunders, Part 3: Team</a></div>
+            
+
+            <!-- Metadata (Below Title) -->
+            <div class="summary-metadata-container summary-metadata-container--below-title">
+            
+              <div class="summary-metadata summary-metadata--primary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+              
+              <div class="summary-metadata summary-metadata--secondary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            </div>
+
+            
+              
+            
+            
+            
+
+            <!-- Metadata (Below Content) -->
+            <div class="summary-metadata-container summary-metadata-container--below-content">
+              
+              <div class="summary-metadata summary-metadata--primary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+              
+              <div class="summary-metadata summary-metadata--secondary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            </div>
+
+          </div> <!-- End .summary-content -->
+
+        </div> <!-- End .summary-item -->
+
+      
+
+        <div class="
+          summary-item
+          summary-item-record-type-text
+          sqs-gallery-design-autocolumns-slide
+          
+          
+          
+          summary-item-has-cats
+          summary-item-has-tags
+          summary-item-has-author
+          summary-item-has-comments-enabled
+          "
+          >
+
+          
+
+          <div class="summary-content sqs-gallery-meta-container">
+
+            <!-- Metadata (Above Title) -->
+            <div class="summary-metadata-container summary-metadata-container--above-title">
+                          
+              <div class="summary-metadata summary-metadata--primary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+              
+              <div class="summary-metadata summary-metadata--secondary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            </div>
+
+            
+              <!-- Title -->
+              <div class="summary-title">
+                <a 
+                
+                  
+                    href="/blog/2018/11/19/a-look-at-ten-hardware-startup-blunders-part-2-schedule-and-focus"
+                  
+                
+                class="summary-title-link">A Look at Ten Hardware Startup Blunders, Part 2: Schedule and Focus</a></div>
+            
+
+            <!-- Metadata (Below Title) -->
+            <div class="summary-metadata-container summary-metadata-container--below-title">
+            
+              <div class="summary-metadata summary-metadata--primary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+              
+              <div class="summary-metadata summary-metadata--secondary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            </div>
+
+            
+              
+            
+            
+            
+
+            <!-- Metadata (Below Content) -->
+            <div class="summary-metadata-container summary-metadata-container--below-content">
+              
+              <div class="summary-metadata summary-metadata--primary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+              
+              <div class="summary-metadata summary-metadata--secondary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            </div>
+
+          </div> <!-- End .summary-content -->
+
+        </div> <!-- End .summary-item -->
+
+      
+
+        <div class="
+          summary-item
+          summary-item-record-type-text
+          sqs-gallery-design-autocolumns-slide
+          
+          
+          
+          summary-item-has-cats
+          summary-item-has-tags
+          summary-item-has-author
+          summary-item-has-comments-enabled
+          "
+          >
+
+          
+
+          <div class="summary-content sqs-gallery-meta-container">
+
+            <!-- Metadata (Above Title) -->
+            <div class="summary-metadata-container summary-metadata-container--above-title">
+                          
+              <div class="summary-metadata summary-metadata--primary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+              
+              <div class="summary-metadata summary-metadata--secondary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            </div>
+
+            
+              <!-- Title -->
+              <div class="summary-title">
+                <a 
+                
+                  
+                    href="/blog/2018/11/12/a-look-at-ten-hardware-startup-blunders-part-1-process"
+                  
+                
+                class="summary-title-link">A Look at Ten Hardware Startup Blunders, Part 1: Process</a></div>
+            
+
+            <!-- Metadata (Below Title) -->
+            <div class="summary-metadata-container summary-metadata-container--below-title">
+            
+              <div class="summary-metadata summary-metadata--primary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+              
+              <div class="summary-metadata summary-metadata--secondary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            </div>
+
+            
+              
+            
+            
+            
+
+            <!-- Metadata (Below Content) -->
+            <div class="summary-metadata-container summary-metadata-container--below-content">
+              
+              <div class="summary-metadata summary-metadata--primary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+              
+              <div class="summary-metadata summary-metadata--secondary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            </div>
+
+          </div> <!-- End .summary-content -->
+
+        </div> <!-- End .summary-item -->
+
+      
+
+        <div class="
+          summary-item
+          summary-item-record-type-text
+          sqs-gallery-design-autocolumns-slide
+          
+           summary-item-has-thumbnail
+          
+          
+          summary-item-has-tags
+          summary-item-has-author
+          summary-item-has-comments-enabled
+          "
+          >
+
+          
+
+          <div class="summary-content sqs-gallery-meta-container">
+
+            <!-- Metadata (Above Title) -->
+            <div class="summary-metadata-container summary-metadata-container--above-title">
+                          
+              <div class="summary-metadata summary-metadata--primary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+              
+              <div class="summary-metadata summary-metadata--secondary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            </div>
+
+            
+              <!-- Title -->
+              <div class="summary-title">
+                <a 
+                
+                  
+                    href="/blog/2018/10/3/a-look-at-my-portable-embedded-toolkit"
+                  
+                
+                class="summary-title-link">A Look at My Portable Embedded Toolkit</a></div>
+            
+
+            <!-- Metadata (Below Title) -->
+            <div class="summary-metadata-container summary-metadata-container--below-title">
+            
+              <div class="summary-metadata summary-metadata--primary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+              
+              <div class="summary-metadata summary-metadata--secondary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            </div>
+
+            
+              
+            
+            
+            
+
+            <!-- Metadata (Below Content) -->
+            <div class="summary-metadata-container summary-metadata-container--below-content">
+              
+              <div class="summary-metadata summary-metadata--primary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+              
+              <div class="summary-metadata summary-metadata--secondary">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            </div>
+
+          </div> <!-- End .summary-content -->
+
+        </div> <!-- End .summary-item -->
+
+      
+
+    </div> <!-- End .summary-item-list -->
+
+  </div> <!-- End .summary-item-list-container -->
+
+</div></div></div><div class="sqs-block html-block sqs-block-html" data-block-type="2" id="block-yui_3_17_2_1_1528304702491_28735"><div class="sqs-block-content"><h3 style="text-align: center; white-space: pre-wrap;"><a href="/archive">Categories</a></h3></div></div><div class="sqs-block archive-block sqs-block-archive" data-block-type="61" id="block-yui_3_17_2_1_1528304702491_26227"><div class="sqs-block-content">
+
+<div class="
+  archive-block-wrapper
+  archive-block-setting-layout-list
+  archive-block-setting-text-alignment-left
+  
+  
+  "
+
+  
+>
+  
+  
+
+  
+
+  <ul class="archive-group-list">
+    
+    
+
+    <li class="archive-group">
+
+      
+        
+        
+        
+        <a href="/blog?category=Bringup" class="archive-group-name-link">
+        
+      
+
+        
+          Bringup
+        
+        <span class="archive-group-count">13</span>
+      </a>
+
+      
+
+    </li>
+
+    
+
+    <li class="archive-group">
+
+      
+        
+        
+        
+        <a href="/blog?category=Build+Automation" class="archive-group-name-link">
+        
+      
+
+        
+          Build Automation
+        
+        <span class="archive-group-count">5</span>
+      </a>
+
+      
+
+    </li>
+
+    
+
+    <li class="archive-group">
+
+      
+        
+        
+        
+        <a href="/blog?category=Debugging" class="archive-group-name-link">
+        
+      
+
+        
+          Debugging
+        
+        <span class="archive-group-count">2</span>
+      </a>
+
+      
+
+    </li>
+
+    
+
+    <li class="archive-group">
+
+      
+        
+        
+        
+        <a href="/blog?category=Development+Kits" class="archive-group-name-link">
+        
+      
+
+        
+          Development Kits
+        
+        <span class="archive-group-count">7</span>
+      </a>
+
+      
+
+    </li>
+
+    
+
+    <li class="archive-group">
+
+      
+        
+        
+        
+        <a href="/blog?category=Embeddable+Libraries" class="archive-group-name-link">
+        
+      
+
+        
+          Embeddable Libraries
+        
+        <span class="archive-group-count">18</span>
+      </a>
+
+      
+
+    </li>
+
+    
+
+    <li class="archive-group">
+
+      
+        
+        
+        
+        <a href="/blog?category=Embedded+C%2B%2B+Series" class="archive-group-name-link">
+        
+      
+
+        
+          Embedded C++ Series
+        
+        <span class="archive-group-count">13</span>
+      </a>
+
+      
+
+    </li>
+
+    
+
+    <li class="archive-group">
+
+      
+        
+        
+        
+        <a href="/blog?category=Embedded+Clang" class="archive-group-name-link">
+        
+      
+
+        
+          Embedded Clang
+        
+        <span class="archive-group-count">3</span>
+      </a>
+
+      
+
+    </li>
+
+    
+
+    <li class="archive-group">
+
+      
+        
+        
+        
+        <a href="/blog?category=Framework" class="archive-group-name-link">
+        
+      
+
+        
+          Framework
+        
+        <span class="archive-group-count">1</span>
+      </a>
+
+      
+
+    </li>
+
+    
+
+    <li class="archive-group">
+
+      
+        
+        
+        
+        <a href="/blog?category=Interviews" class="archive-group-name-link">
+        
+      
+
+        
+          Interviews
+        
+        <span class="archive-group-count">1</span>
+      </a>
+
+      
+
+    </li>
+
+    
+
+    <li class="archive-group">
+
+      
+        
+        
+        
+        <a href="/blog?category=Manufacturing" class="archive-group-name-link">
+        
+      
+
+        
+          Manufacturing
+        
+        <span class="archive-group-count">4</span>
+      </a>
+
+      
+
+    </li>
+
+    
+
+    <li class="archive-group">
+
+      
+        
+        
+        
+        <a href="/blog?category=Migrating+from+C+to+C%2B%2B" class="archive-group-name-link">
+        
+      
+
+        
+          Migrating from C to C++
+        
+        <span class="archive-group-count">29</span>
+      </a>
+
+      
+
+    </li>
+
+    
+
+    <li class="archive-group">
+
+      
+        
+        
+        
+        <a href="/blog?category=Monday+Morning+Reading" class="archive-group-name-link">
+        
+      
+
+        
+          Monday Morning Reading
+        
+        <span class="archive-group-count">22</span>
+      </a>
+
+      
+
+    </li>
+
+    
+
+    <li class="archive-group">
+
+      
+        
+        
+        
+        <a href="/blog?category=Product+Development" class="archive-group-name-link">
+        
+      
+
+        
+          Product Development
+        
+        <span class="archive-group-count">10</span>
+      </a>
+
+      
+
+    </li>
+
+    
+
+    <li class="archive-group">
+
+      
+        
+        
+        
+        <a href="/blog?category=Quotes" class="archive-group-name-link">
+        
+      
+
+        
+          Quotes
+        
+        <span class="archive-group-count">1</span>
+      </a>
+
+      
+
+    </li>
+
+    
+
+    <li class="archive-group">
+
+      
+        
+        
+        
+        <a href="/blog?category=Templates" class="archive-group-name-link">
+        
+      
+
+        
+          Templates
+        
+        <span class="archive-group-count">12</span>
+      </a>
+
+      
+
+    </li>
+
+    
+
+  </ul>
+
+  
+
+</div>
+</div></div></div></div></div>
+        </aside>
+        
+        
+      </main>
+
+      <div id="preFooter">
+        <div class="pre-footer-inner">
+          <div class="sqs-layout sqs-grid-12 columns-12" data-layout-label="Pre-Footer Content" data-type="block-field" data-updated-on="1406661050940" id="preFooterBlocks"><div class="row sqs-row"><div class="col sqs-col-12 span-12"><div class="sqs-block socialaccountlinks-v2-block sqs-block-socialaccountlinks-v2" data-block-type="54" id="block-yui_3_17_2_1_1406660821033_8373"><div class="sqs-block-content">
+
+<div class="sqs-svg-icon--outer social-icon-alignment-center social-icons-color-white social-icons-size-large social-icons-shape-circle social-icons-style-knockout" >
+  <nav class="sqs-svg-icon--list">
+    <a href="https://github.com/embeddedartistry" target="_blank" class="sqs-svg-icon--wrapper github">
+      <div>
+        <svg class="sqs-svg-icon--social" viewBox="0 0 64 64">
+          <use class="sqs-use--icon" xlink:href="#github-icon"></use>
+          <use class="sqs-use--mask" xlink:href="#github-mask"></use>
+        </svg>
+      </div>
+    </a><a href="https://twitter.com/mbeddedartistry" target="_blank" class="sqs-svg-icon--wrapper twitter">
+      <div>
+        <svg class="sqs-svg-icon--social" viewBox="0 0 64 64">
+          <use class="sqs-use--icon" xlink:href="#twitter-icon"></use>
+          <use class="sqs-use--mask" xlink:href="#twitter-mask"></use>
+        </svg>
+      </div>
+    </a><a href="https://www.linkedin.com/in/phjohnston" target="_blank" class="sqs-svg-icon--wrapper linkedin">
+      <div>
+        <svg class="sqs-svg-icon--social" viewBox="0 0 64 64">
+          <use class="sqs-use--icon" xlink:href="#linkedin-icon"></use>
+          <use class="sqs-use--mask" xlink:href="#linkedin-mask"></use>
+        </svg>
+      </div>
+    </a>
+  </nav>
+</div></div></div></div></div></div>
+        </div>
+      </div>
+
+      <footer id="footer" role="contentinfo">
+        <div class="footer-inner">
+          <div class="nav-wrapper back-to-top-nav"><nav><div class="back-to-top"><a href="#header">Back to Top</a></div></nav></div>
+          <div id="secondaryNavWrapper" class="nav-wrapper" data-content-field="navigation-secondaryNav">
+  <nav id="secondaryNavigation" data-content-field="navigation-secondaryNav">
+    
+      
+        
+
+        
+
+          
+          <div class="collection" id="id5771e9f529687f7f8d444ac2">
+            <a href="/contact/">
+              <span>Contact Us</span>
+            </a>
+          </div>
+          
+
+        
+      
+      
+
+    
+      
+        
+
+        
+
+          
+          <div class="collection" id="id5b47cb3b1ae6cf09d9071c6f">
+            <a href="/support-the-website/">
+              <span>Support the Site</span>
+            </a>
+          </div>
+          
+
+        
+      
+      
+
+    
+      
+        
+        <div class="external">
+          <a href="/newsletter">
+            <span>Join the Newsletter</span>
+          </a>
+        </div>
+        
+
+      
+
+    
+  </nav>
+</div>
+
+
+          <div id="siteInfo"><span class="site-address">San Francisco, CA</span><a href="mailto:phillip@embeddedartistry.com" class="site-email"><span>phillip@embeddedartistry.com</span></a></div>
+          <div class="sqs-layout sqs-grid-12 columns-12" data-layout-label="Footer Content" data-type="block-field" data-updated-on="1506525432978" id="footerBlocks"><div class="row sqs-row"><div class="col sqs-col-12 span-12"><div class="sqs-block html-block sqs-block-html" data-block-type="2" id="block-yui_3_17_2_4_1506525215621_15121"><div class="sqs-block-content"><h3 class="text-align-center">Thanks for visiting, have a wonderful day!</h3></div></div></div></div></div>
+        </div>
+      </footer>
+
+    </div>
+
+    <script src="https://static1.squarespace.com/static/ta/52a74d9ae4b0253945d2aee9/1015/scripts/site-bundle.js" type="text/javascript"></script>
+    <div id="amzn-assoc-ad-1130d562-ceac-457a-b731-0d06fafb9d60"></div><script async src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=1130d562-ceac-457a-b731-0d06fafb9d60"></script><script type="text/javascript" data-sqs-type="imageloader-bootstrapper">(function() {if(window.ImageLoader) { window.ImageLoader.bootstrap({}, document); }})();</script><script>Squarespace.afterBodyLoad(Y);</script><svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display:none"><symbol id="github-icon" viewBox="0 0 64 64"><path d="M32,16c-8.8,0-16,7.2-16,16c0,7.1,4.6,13.1,10.9,15.2 c0.8,0.1,1.1-0.3,1.1-0.8c0-0.4,0-1.4,0-2.7c-4.5,1-5.4-2.1-5.4-2.1c-0.7-1.8-1.8-2.3-1.8-2.3c-1.5-1,0.1-1,0.1-1 c1.6,0.1,2.5,1.6,2.5,1.6c1.4,2.4,3.7,1.7,4.7,1.3c0.1-1,0.6-1.7,1-2.1c-3.6-0.4-7.3-1.8-7.3-7.9c0-1.7,0.6-3.2,1.6-4.3 c-0.2-0.4-0.7-2,0.2-4.2c0,0,1.3-0.4,4.4,1.6c1.3-0.4,2.6-0.5,4-0.5c1.4,0,2.7,0.2,4,0.5c3.1-2.1,4.4-1.6,4.4-1.6 c0.9,2.2,0.3,3.8,0.2,4.2c1,1.1,1.6,2.5,1.6,4.3c0,6.1-3.7,7.5-7.3,7.9c0.6,0.5,1.1,1.5,1.1,3c0,2.1,0,3.9,0,4.4 c0,0.4,0.3,0.9,1.1,0.8C43.4,45.1,48,39.1,48,32C48,23.2,40.8,16,32,16z"/></symbol><symbol id="github-mask" viewBox="0 0 64 64"><path d="M0,0v64h64V0H0z M37.1,47.2c-0.8,0.2-1.1-0.3-1.1-0.8c0-0.5,0-2.3,0-4.4c0-1.5-0.5-2.5-1.1-3 c3.6-0.4,7.3-1.7,7.3-7.9c0-1.7-0.6-3.2-1.6-4.3c0.2-0.4,0.7-2-0.2-4.2c0,0-1.3-0.4-4.4,1.6c-1.3-0.4-2.6-0.5-4-0.5 c-1.4,0-2.7,0.2-4,0.5c-3.1-2.1-4.4-1.6-4.4-1.6c-0.9,2.2-0.3,3.8-0.2,4.2c-1,1.1-1.6,2.5-1.6,4.3c0,6.1,3.7,7.5,7.3,7.9 c-0.5,0.4-0.9,1.1-1,2.1c-0.9,0.4-3.2,1.1-4.7-1.3c0,0-0.8-1.5-2.5-1.6c0,0-1.6,0-0.1,1c0,0,1,0.5,1.8,2.3c0,0,0.9,3.1,5.4,2.1 c0,1.3,0,2.3,0,2.7c0,0.4-0.3,0.9-1.1,0.8C20.6,45.1,16,39.1,16,32c0-8.8,7.2-16,16-16c8.8,0,16,7.2,16,16 C48,39.1,43.4,45.1,37.1,47.2z"/></symbol><symbol id="twitter-icon" viewBox="0 0 64 64"><path d="M48,22.1c-1.2,0.5-2.4,0.9-3.8,1c1.4-0.8,2.4-2.1,2.9-3.6c-1.3,0.8-2.7,1.3-4.2,1.6 C41.7,19.8,40,19,38.2,19c-3.6,0-6.6,2.9-6.6,6.6c0,0.5,0.1,1,0.2,1.5c-5.5-0.3-10.3-2.9-13.5-6.9c-0.6,1-0.9,2.1-0.9,3.3 c0,2.3,1.2,4.3,2.9,5.5c-1.1,0-2.1-0.3-3-0.8c0,0,0,0.1,0,0.1c0,3.2,2.3,5.8,5.3,6.4c-0.6,0.1-1.1,0.2-1.7,0.2c-0.4,0-0.8,0-1.2-0.1 c0.8,2.6,3.3,4.5,6.1,4.6c-2.2,1.8-5.1,2.8-8.2,2.8c-0.5,0-1.1,0-1.6-0.1c2.9,1.9,6.4,2.9,10.1,2.9c12.1,0,18.7-10,18.7-18.7 c0-0.3,0-0.6,0-0.8C46,24.5,47.1,23.4,48,22.1z"/></symbol><symbol id="twitter-mask" viewBox="0 0 64 64"><path d="M0,0v64h64V0H0z M44.7,25.5c0,0.3,0,0.6,0,0.8C44.7,35,38.1,45,26.1,45c-3.7,0-7.2-1.1-10.1-2.9 c0.5,0.1,1,0.1,1.6,0.1c3.1,0,5.9-1,8.2-2.8c-2.9-0.1-5.3-2-6.1-4.6c0.4,0.1,0.8,0.1,1.2,0.1c0.6,0,1.2-0.1,1.7-0.2 c-3-0.6-5.3-3.3-5.3-6.4c0,0,0-0.1,0-0.1c0.9,0.5,1.9,0.8,3,0.8c-1.8-1.2-2.9-3.2-2.9-5.5c0-1.2,0.3-2.3,0.9-3.3 c3.2,4,8.1,6.6,13.5,6.9c-0.1-0.5-0.2-1-0.2-1.5c0-3.6,2.9-6.6,6.6-6.6c1.9,0,3.6,0.8,4.8,2.1c1.5-0.3,2.9-0.8,4.2-1.6 c-0.5,1.5-1.5,2.8-2.9,3.6c1.3-0.2,2.6-0.5,3.8-1C47.1,23.4,46,24.5,44.7,25.5z"/></symbol><symbol id="linkedin-icon" viewBox="0 0 64 64"><path d="M20.4,44h5.4V26.6h-5.4V44z M23.1,18c-1.7,0-3.1,1.4-3.1,3.1c0,1.7,1.4,3.1,3.1,3.1 c1.7,0,3.1-1.4,3.1-3.1C26.2,19.4,24.8,18,23.1,18z M39.5,26.2c-2.6,0-4.4,1.4-5.1,2.8h-0.1v-2.4h-5.2V44h5.4v-8.6 c0-2.3,0.4-4.5,3.2-4.5c2.8,0,2.8,2.6,2.8,4.6V44H46v-9.5C46,29.8,45,26.2,39.5,26.2z"/></symbol><symbol id="linkedin-mask" viewBox="0 0 64 64"><path d="M0,0v64h64V0H0z M25.8,44h-5.4V26.6h5.4V44z M23.1,24.3c-1.7,0-3.1-1.4-3.1-3.1c0-1.7,1.4-3.1,3.1-3.1 c1.7,0,3.1,1.4,3.1,3.1C26.2,22.9,24.8,24.3,23.1,24.3z M46,44h-5.4v-8.4c0-2,0-4.6-2.8-4.6c-2.8,0-3.2,2.2-3.2,4.5V44h-5.4V26.6 h5.2V29h0.1c0.7-1.4,2.5-2.8,5.1-2.8c5.5,0,6.5,3.6,6.5,8.3V44z"/></symbol></svg>
+
+  </body>
+</html>
