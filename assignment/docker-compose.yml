@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  web:
+    image: couchdb
+    container_name: apache_webserver
+    ports:
+      - "8110:5984"
+    stdin_open: true
+    tty: true
+
