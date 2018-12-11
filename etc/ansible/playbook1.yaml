@@ -1,0 +1,36 @@
+--- 
+- hosts: all 
+  become: true 
+  vars: 
+   ansible_become_pass: ubuntu
+  tasks: 
+  - name: install nvm
+    apt: 
+     pkg: libssl-dev 
+     state: present 
+    notify: 
+     - run update 
+  - name: install node
+    apt: 
+     pkg: nodejs
+     state: present 
+  - name: install docker
+    apt: 
+     pkg: docker
+     state: present 
+  - name: install docker-compose
+    apt: 
+     pkg: docker-compose
+     state: present 
+  - name: install openssl
+    apt: 
+     pkg: openssl
+     state: present 
+  - name: install git
+    apt: 
+     pkg: git
+     state: present 
+  handlers: 
+  - name: run update 
+    apt: 
+     update_cache: yes 

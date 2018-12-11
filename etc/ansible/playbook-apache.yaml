@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+    - name: install apache2
+      apt: name=apache2 update_cache=yes state=latest
+    - name: Cloning the repository 
+      git: repo=ssh://git@github.com/AsifAliR/Assignment.git dest=/temp key_file=/root/.ssh/id_rsa
+    - name: copy test file
+      copy: src=/temp/Assignment/index.html dest=/var/www/html/
+      notify:
+         - restart apache2 
+
+  handlers:
+    - name: restart apache2
+      service: name=apache2 state=restarted
